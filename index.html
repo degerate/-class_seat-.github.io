@@ -115,6 +115,43 @@
                 alert("Invalid Credentials");
             }
         }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        function randomizeAll() {
+            const shuffled = shuffle([...students]);
+            displaySeating(shuffled);
+        }
+        
+        function separateBoysAndGirls() {
+            let boys = students.filter(s => s.gender === "b");
+            let girls = students.filter(s => s.gender === "g");
+            boys = shuffle(boys);
+            girls = shuffle(girls);
+            displaySeating([...girls, ...boys]);
+        }
+        
+        function displaySeating(arrangedStudents) {
+            const table = document.getElementById("seatingTable").querySelector("tbody");
+            table.innerHTML = "";
+            for (let i = 0; i < arrangedStudents.length; i += 2) {
+                let row = table.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                cell1.innerText = arrangedStudents[i].name;
+                cell1.className = arrangedStudents[i].gender === "b" ? "boy" : "girl";
+                if (arrangedStudents[i + 1]) {
+                    cell2.innerText = arrangedStudents[i + 1].name;
+                    cell2.className = arrangedStudents[i + 1].gender === "b" ? "boy" : "girl";
+                }
+            }
+        }
     </script>
 </body>
 </html>
