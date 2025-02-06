@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seat Arranger</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 40%; /* Reduced width for a more compact table */
+            margin: auto;
+        }
+        h1 {
+            font-size: 20px; /* Made the title smaller */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px; /* Reduced padding to make table more compact */
+            text-align: center;
+            font-size: 14px; /* Smaller font for a tighter fit */
+        }
+        .boy { background-color: #ADD8E6; } /* Light Blue */
+        .girl { background-color: #FFC0CB; } /* Light Pink */
+        button {
+            margin: 10px;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Seat Arranger</h1>
+        <button onclick="randomizeAll()">Randomize All</button>
+        <button onclick="separateBoysAndGirls()">Separate Boys & Girls</button>
+        
+        <table id="seatingTable">
+            <tbody></tbody>
+        </table>
+    </div>
+    
+    <script>
+        const students = [
+            { name: "1. Fionna", gender: "g" },
+            { name: "2. Arya", gender: "b" },
+            { name: "3. Aerish", gender: "g" },
+            { name: "4. Angela", gender: "g" },
+            { name: "5. Lio", gender: "b" },
+            { name: "6. Aviel", gender: "b" },
+            { name: "7. Kyara", gender: "g" },
+            { name: "8. Charles", gender: "b" },
+            { name: "9. Gavin", gender: "b" },
+            { name: "10. Audi", gender: "g" },
+            { name: "11. Ano", gender: "b" },
+            { name: "12. Edzhar", gender: "b" },
+            { name: "13. Caleb", gender: "b" },
+            { name: "14. Fabian", gender: "b" },
+            { name: "15. Astro", gender: "b" },
+            { name: "16. Satya", gender: "b" },
+            { name: "17. Grego", gender: "b" },
+            { name: "18. Hans", gender: "b" },
+            { name: "19. Evan", gender: "b" },
+            { name: "20. Hugo", gender: "b" },
+            { name: "21. Imelda", gender: "g" },
+            { name: "22. Nathan", gender: "b" },
+            { name: "23. Joy", gender: "g" },
+            { name: "24. Kennard", gender: "b" },
+            { name: "25. Niko", gender: "b" },
+            { name: "26. Mario", gender: "b" },
+            { name: "27. Michael", gender: "b" },
+            { name: "28. Ayu", gender: "g" },
+            { name: "29. Novandra", gender: "b" },
+            { name: "30. Rama", gender: "b" },
+            { name: "31. Quinn", gender: "b" },
+            { name: "32. Steven", gender: "b" },
+            { name: "33. William", gender: "b" },
+            { name: "34. Arian", gender: "b" }
+        ];
+        
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        function randomizeAll() {
+            const shuffled = shuffle([...students]);
+            displaySeating(shuffled);
+        }
+        
+        function separateBoysAndGirls() {
+            let boys = students.filter(s => s.gender === "b");
+            let girls = students.filter(s => s.gender === "g");
+            boys = shuffle(boys);
+            girls = shuffle(girls);
+            displaySeating([...girls, ...boys]);
+        }
+        
+        function displaySeating(arrangedStudents) {
+            const table = document.getElementById("seatingTable").querySelector("tbody");
+            table.innerHTML = "";
+            for (let i = 0; i < arrangedStudents.length; i += 2) {
+                let row = table.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                cell1.innerText = arrangedStudents[i].name;
+                cell1.className = arrangedStudents[i].gender === "b" ? "boy" : "girl";
+                if (arrangedStudents[i + 1]) {
+                    cell2.innerText = arrangedStudents[i + 1].name;
+                    cell2.className = arrangedStudents[i + 1].gender === "b" ? "boy" : "girl";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
