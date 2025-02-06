@@ -11,36 +11,33 @@
             background-color: #f5f5f5;
         }
         .container {
-            width: 90%; /* Reduced width by 10% */
+            width: 90%;
             margin: auto;
-            max-width: 450px; /* Reduced max-width by 10% */
+            max-width: 450px;
         }
         h1 {
-            font-size: 21.6px; /* Reduced by 10% from 24px */
+            font-size: 21.6px;
         }
         table {
             width: auto;
             border-collapse: collapse;
-            margin-top: 18px; /* Reduced by 10% from 20px */
+            margin-top: 18px;
             display: inline-block;
             white-space: nowrap;
         }
         th, td {
             border: 1px solid black;
-            padding: 9px; /* Reduced by 10% from 10px */
+            padding: 9px;
             text-align: center;
-            font-size: 14.4px; /* Reduced by 10% from 16px */
+            font-size: 14.4px;
         }
         .boy { background-color: #ADD8E6; }
         .girl { background-color: #FFC0CB; }
         button {
-            margin: 9px; /* Reduced by 10% from 10px */
-            padding: 9px 13.5px; /* Reduced by 10% from 10px 15px */
-            font-size: 14.4px; /* Reduced by 10% from 16px */
+            margin: 9px;
+            padding: 9px 13.5px;
+            font-size: 14.4px;
             cursor: pointer;
-        }
-        .hidden {
-            display: none;
         }
     </style>
 </head>
@@ -49,15 +46,7 @@
         <h1>Seat Arranger</h1>
         <button onclick="randomizeAll()">Randomize All</button>
         <button onclick="separateBoysAndGirls()">Separate Boys & Girls</button>
-        <button onclick="showLogin()">Admin Login</button>
         
-        <div id="loginModal" class="hidden">
-            <h2>Admin Login</h2>
-            <input type="text" id="username" placeholder="Username">
-            <input type="password" id="password" placeholder="Password">
-            <button onclick="checkLogin()">Login</button>
-        </div>
-
         <table id="seatingTable">
             <tbody></tbody>
         </table>
@@ -101,18 +90,40 @@
             { name: "34. Arian", gender: "b" }
         ];
         
-        function showLogin() {
-            document.getElementById("loginModal").classList.remove("hidden");
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
         }
         
-        function checkLogin() {
-            const user = document.getElementById("username").value;
-            const pass = document.getElementById("password").value;
-            if (user === "admin" && pass === "1234") {
-                alert("Access Granted");
-                document.getElementById("loginModal").classList.add("hidden");
-            } else {
-                alert("Invalid Credentials");
+        function randomizeAll() {
+            const shuffled = shuffle([...students]);
+            displaySeating(shuffled);
+        }
+        
+        function separateBoysAndGirls() {
+            let boys = students.filter(s => s.gender === "b");
+            let girls = students.filter(s => s.gender === "g");
+            boys = shuffle(boys);
+            girls = shuffle(girls);
+            displaySeating([...girls, ...boys]);
+        }
+        
+        function displaySeating(arrangedStudents) {
+            const table = document.getElementById("seatingTable").querySelector("tbody");
+            table.innerHTML = "";
+            for (let i = 0; i < arrangedStudents.length; i += 2) {
+                let row = table.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                cell1.innerText = arrangedStudents[i].name;
+                cell1.className = arrangedStudents[i].gender === "b" ? "boy" : "girl";
+                if (arrangedStudents[i + 1]) {
+                    cell2.innerText = arrangedStudents[i + 1].name;
+                    cell2.className = arrangedStudents[i + 1].gender === "b" ? "boy" : "girl";
+                }
             }
         }
     </script>
